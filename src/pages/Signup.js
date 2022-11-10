@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -18,7 +19,7 @@ const Signup = () => {
       [e.target.name]: e.target.value,
     }));
   };
-  const { signup, currentUser } = useAuth();
+  const { signup } = useAuth();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +30,7 @@ const Signup = () => {
       setError("");
       setLoading(true);
       await signup(email, password);
+      navigate("/dashboard");
     } catch (error) {
       setLoading(false);
       setError("Failed to create a new account");
@@ -36,68 +38,79 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center text-left p-12">
-      <p>Sign up</p>
-      {error && <p>{error}</p>}
-      {currentUser && JSON.stringify(currentUser)}
+    <div className="flex justify-center w-full">
       <form
-        className="bg-slate-300 shadow-2xl rounded px-8 pt-6 pb-8 mb-4"
+        className="bg-gray-100 shadow-md rounded px-8 m-28 pt-6 pb-8"
         onSubmit={onSubmit}
       >
-        <label
-          htmlFor="email"
-          className="mb-3 block text-base font-medium text-[#07074D]"
-        >
-          Email
-        </label>
-        <div className="mb-6">
+        <p className="text-center">Sign up</p>
+        <div className="mb-4">
+          <label
+            htmlFor="email"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Email
+          </label>
           <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray leading-tight focus:outline-none focus:shadow-outline"
             type="email"
             placeholder="Email"
             onChange={onChange}
             name="email"
           />
         </div>
-        <label
-          htmlFor="password"
-          className="mb-3 block text-base font-medium text-[#07074D]"
-        >
-          Password
-        </label>
-        <div className="mb-6">
+        <div className="mb-4">
+          <label
+            htmlFor="password"
+            className="block text-gray-700 text-sm font-bold mb-2"
+          >
+            Password
+          </label>
           <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray leading-tight focus:outline-none focus:shadow-outline"
             type="password"
             placeholder="Password"
             onChange={onChange}
             name="password"
           />
         </div>
-        <label htmlFor="cnfPassword">Confirm password</label>
-        <div className="mb-6">
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            onChange={onChange}
-            name="confirmPassword"
-          />
-        </div>
-        <div className="text-center lg:text-left">
-          <button
-            disabled={loading}
-            className="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="cnfPassword"
           >
-            SignUp
-          </button>
-          <p className="text-sm font-semibold mt-2 mb-2 pt-1">
-            Already have an account ?
-            <Link
-              className="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out"
-              to="/login"
+            Confirm password
+          </label>
+          <div className="mb-6">
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray leading-tight focus:outline-none focus:shadow-outline"
+              type="password"
+              placeholder="Confirm Password"
+              onChange={onChange}
+              name="confirmPassword"
+            />
+          </div>
+          <div className="flex items-center justify-center">
+            <button
+              disabled={loading}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
             >
-              Log In
-            </Link>
-          </p>
+              SignUp
+            </button>
+          </div>
+          <div className="flex justify-center">
+            <p className="text-sm font-semibold mt-3 p-3">
+              Already have an account ?
+              <Link
+                className="text-red-600 hover:text-red-700 focus:text-red-700 transition duration-200 ease-in-out mx-1"
+                to="/login"
+              >
+                Log In
+              </Link>
+            </p>
+          </div>
         </div>
+        <p className="text-center">{error}</p>
       </form>
     </div>
   );
