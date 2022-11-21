@@ -33,7 +33,7 @@ const Signup = () => {
       navigate("/dashboard");
     } catch (error) {
       setLoading(false);
-      setError("Failed to create a new account");
+      setError("User already Exist !");
     }
   };
 
@@ -110,7 +110,7 @@ const Signup = () => {
             </p>
           </div>
         </div>
-        <p className="text-center">{error}</p>
+        <p className="text-center text-red-600 font-bold text-lg">{error}</p>
       </form>
     </div>
   );
