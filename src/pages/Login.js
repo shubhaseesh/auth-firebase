@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
+  const {currentUser}  = useAuth()
+  console.log(currentUser)
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -80,6 +82,7 @@ const Login = () => {
           </button>
           <Link to="/forgot-password">Forgot Password ?</Link>
         </div>
+        { !currentUser && 
         <div className="flex justify-center">
           <p className="text-sm font-semibold mt-2">
             Need an account ?
@@ -90,7 +93,7 @@ const Login = () => {
               Sign Up
             </Link>
           </p>
-        </div>
+        </div>}
         <p className="text-center text-2xl text-red-500">{error}</p>
       </form>
     </div>
